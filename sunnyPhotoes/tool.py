@@ -48,7 +48,7 @@ def print_help():
 
 def compress(choose, des_dir, src_dir, file_list):
     """压缩算法，img.thumbnail对图片进行压缩，
-    
+
     参数
     -----------
     choose: str
@@ -72,7 +72,7 @@ def compress_photo():
     '''调用压缩图片的函数
     '''
     src_dir, des_dir = "photos/", "min_photos/"
-    
+
     if directory_exists(src_dir):
         if not directory_exists(src_dir):
             make_directory(src_dir)
@@ -93,7 +93,7 @@ def compress_photo():
 
 def handle_photo():
     '''根据图片的文件名处理成需要的json格式的数据
-    
+
     -----------
     最后将data.json文件存到博客的source/photos文件夹下
     '''
@@ -106,7 +106,7 @@ def handle_photo():
         date_str, info = filename.split("_")
         info, _ = info.split(".")
         date = datetime.strptime(date_str, "%Y-%m-%d")
-        year_month = date_str[0:7]            
+        year_month = date_str[0:7]
         if i == 0:  # 处理第一个文件
             new_dict = {"date": year_month, "arr":{'year': date.year,
                                                                    'month': date.month,
@@ -114,7 +114,7 @@ def handle_photo():
                                                                    'text': [info],
                                                                    'type': ['image']
                                                                    }
-                                        } 
+                                        }
             list_info.append(new_dict)
         elif year_month != list_info[-1]['date']:  # 不是最后的一个日期，就新建一个dict
             new_dict = {"date": year_month, "arr":{'year': date.year,
@@ -131,12 +131,12 @@ def handle_photo():
             list_info[-1]['arr']['type'].append('image')
     list_info.reverse()  # 翻转
     final_dict = {"list": list_info}
-    with open("../lawlite19.github.io/source/photos/data.json","w") as fp:
+    with open("D:/hexo/yangyang/source/photoes/data.json","w") as fp:
         json.dump(final_dict, fp)
 
 def cut_photo():
     """裁剪算法
-    
+
     ----------
     调用Graphics类中的裁剪算法，将src_dir目录下的文件进行裁剪（裁剪成正方形）
     """
@@ -151,18 +151,18 @@ def cut_photo():
             print_help()
             for infile in file_list:
                 img = Image.open(src_dir+infile)
-                Graphics(infile=src_dir+infile, outfile=src_dir + infile).cut_by_ratio()            
+                Graphics(infile=src_dir+infile, outfile=src_dir + infile).cut_by_ratio()
         else:
             pass
     else:
-        print("source directory not exist!")     
+        print("source directory not exist!")
 
 
 
 def git_operation():
     '''
     git 命令行函数，将仓库提交
-    
+
     ----------
     需要安装git命令行工具，并且添加到环境变量中
     '''
@@ -175,7 +175,3 @@ if __name__ == "__main__":
     compress_photo()   # 压缩图片，并保存到mini_photos文件夹下
     git_operation()    # 提交到github仓库
     handle_photo()     # 将文件处理成json格式，存到博客仓库中
-    
-    
-    
-    
